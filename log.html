@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>The Friction Layer - Log</title>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "EB Garamond", Garamond, Georgia, serif;
+      background: #FFFFFF;
+      color: #333333;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    h1 {
+      color: #000000;
+      font-weight: 600;
+      font-size: 30px;
+      margin-bottom: 4px;
+    }
+    .subtitle { font-style: italic; color: #333333; margin-bottom: 20px; }
+    h2 {
+      color: #000000;
+      font-weight: 600;
+      font-size: 21px;
+      margin: 26px 0 14px;
+    }
+    hr {
+      border: none;
+      border-top: 2px solid #333333;
+      margin: 28px 0;
+    }
+    #chart-wrap { overflow-x: auto; }
+    .legend {
+      display: flex;
+      gap: 22px;
+      font-size: 14px;
+      margin: 10px 0 6px;
+    }
+    .legend span { display: flex; align-items: center; gap: 7px; }
+    .swatch { width: 12px; height: 12px; display: inline-block; }
+    .empty { font-style: italic; color: #333333; }
+    .entry {
+      background: #F5F5F4;
+      color: #000000;
+      border-radius: 0;
+      padding: 9px 16px;
+      margin-bottom: 12px;
+    }
+    .entry .head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .entry .when { color: #333333; font-variant-numeric: tabular-nums; }
+    .entry .outcome { font-weight: 600; }
+    .outcome.engaged { color: #2A9D6F; }
+    .outcome.dismissed { color: #000000; }
+    .outcome.let { color: #000000; }
+    .entry .msg { font-style: italic; margin-bottom: 4px; }
+    .entry .kv { font-size: 14px; margin: 2px 0; }
+    .entry .kv b { font-weight: 600; }
+    details { font-size: 14px; margin-top: 4px; }
+    summary { cursor: pointer; color: #333333; }
+    details .ctx { margin: 6px 0 0 12px; color: #333333; }
+  </style>
+</head>
+<body>
+  <h1>The Friction Layer</h1>
+  <div class="subtitle">Private local log. Nothing here leaves this machine.</div>
+  <hr>
+  <h2>Weekly</h2>
+  <div class="legend">
+    <span><span class="swatch" style="background:#2A9D6F"></span>caught &amp; engaged</span>
+    <span><span class="swatch" style="background:#D97D3D"></span>dismissed</span>
+    <span><span class="swatch" style="background:#3B6E8F"></span>let through</span>
+  </div>
+  <div id="chart-wrap"></div>
+  <hr>
+  <h2>Raw log</h2>
+  <div id="entries"></div>
+  <script src="log.js"></script>
+</body>
+</html>

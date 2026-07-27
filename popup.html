@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 300px;
+      font-family: "EB Garamond", Garamond, Georgia, serif;
+      background: #FFFFFF;
+      color: #333333;
+      padding: 18px 20px 20px;
+    }
+    h1 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #000000;
+      margin-bottom: 12px;
+    }
+    hr {
+      border: none;
+      border-top: 2px solid #333333;
+      margin: 12px 0;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0;
+      font-size: 15px;
+    }
+    .row label { cursor: pointer; }
+    input[type="checkbox"], input[type="radio"] {
+      accent-color: #000000;
+      cursor: pointer;
+    }
+    .radios { display: flex; gap: 14px; font-size: 14px; }
+    .radios label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    .slider-row { margin: 12px 0 4px; font-size: 15px; }
+    .slider-line { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+    input[type="range"] { flex: 1; accent-color: #000000; }
+    #timerValue {
+      font-variant-numeric: tabular-nums;
+      color: #000000;
+      min-width: 32px;
+      text-align: right;
+      font-size: 14px;
+    }
+    a.loglink {
+      display: inline-block;
+      margin-top: 6px;
+      color: #333333;
+      font-style: italic;
+      font-size: 14.5px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+    a.loglink:hover { color: #000000; }
+  </style>
+</head>
+<body>
+  <h1>The Friction Layer</h1>
+  <hr>
+  <div class="row">
+    <label for="enabled">On</label>
+    <input type="checkbox" id="enabled">
+  </div>
+  <div class="row">
+    <span>Intensity</span>
+    <div class="radios">
+      <label><input type="radio" name="intensity" value="gentle"> gentle</label>
+      <label><input type="radio" name="intensity" value="standard"> standard</label>
+    </div>
+  </div>
+  <div class="slider-row">
+    <span>Timer</span>
+    <div class="slider-line">
+      <input type="range" id="timer" min="5" max="60" step="1">
+      <span id="timerValue">30s</span>
+    </div>
+  </div>
+  <hr>
+  <a class="loglink" id="openLog">View the log →</a>
+  <script src="popup.js"></script>
+</body>
+</html>

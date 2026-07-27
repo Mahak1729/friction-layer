@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "The Friction Layer",
+  "version": "1.0.0",
+  "description": "One question before the AI answers. Personal cognitive forcing tool for chatgpt.com and claude.ai.",
+  "permissions": ["storage", "unlimitedStorage"],
+  "host_permissions": ["https://api.anthropic.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://claude.ai/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "The Friction Layer"
+  }
+}
