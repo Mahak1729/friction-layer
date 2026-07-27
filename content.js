@@ -281,8 +281,9 @@
     .visible .backdrop, .card.visible { opacity: 1; }
     .fading .backdrop, .card.fading { opacity: 0 !important; transition: opacity 200ms ease; }
     .label {
-      font-size: 11px;
-      letter-spacing: 0.16em;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
       color: #000000;
       font-weight: 600;
       margin-bottom: 12px;
@@ -424,7 +425,7 @@
     card.className = "card";
     card.setAttribute("role", "dialog");
     card.innerHTML = `
-      <div class="label">the friction layer</div>
+      <div class="label">The Friction Layer</div>
       <hr class="rule">
       <div class="preview hidden"></div>
       <div class="loading-space"></div>
