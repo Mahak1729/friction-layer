@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>The Friction Layer - Log</title>
+  <title>The Friction Layer | Log</title>
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
   <style>
@@ -35,7 +35,7 @@
       border-top: 2px solid #333333;
       margin: 28px 0;
     }
-    #chart-wrap { overflow-x: auto; }
+    #chart-wrap, #chart-wrap-daily { overflow-x: auto; }
     .legend {
       display: flex;
       gap: 22px;
@@ -84,7 +84,10 @@
   </div>
   <div id="chart-wrap"></div>
   <hr>
-  <h2>Raw log</h2>
+  <h2>Daily</h2>
+  <div id="chart-wrap-daily"></div>
+  <hr>
+  <h2>Raw Log</h2>
   <div id="entries"></div>
   <script src="log.js"></script>
 </body>

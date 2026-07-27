@@ -112,9 +112,20 @@ the classification calls to the Anthropic API.
 | `background.js` | Service worker: classifier call, genuine-effort check, log writes |
 | `content.js` | Interception, friction card, nudge chip, release mechanics |
 | `popup.html/js` | Settings |
-| `log.html/js` | Private log: raw entries (newest first) + weekly bar chart |
+| `log.html/js` | Private log: raw entries (newest first) + weekly and daily bar charts |
 | `LIMITATIONS.md` | What the classifier, effort check, and pre-filter get wrong |
 
 ## Known limits before you rely on it
 
 See [LIMITATIONS.md](LIMITATIONS.md), short and worth reading once.
+
+## Future roadmap
+
+Ideas parked for later, not built yet:
+
+- **Provider-agnostic classifier.** Right now the extension only talks to
+  `api.anthropic.com`, both `manifest.json`'s `host_permissions` and the
+  request/response handling in `background.js` are Anthropic-specific.
+  Supporting another provider (OpenAI, etc.) would mean adding its domain to
+  `host_permissions` and writing a second request/response path in
+  `background.js`, not just changing a setting.

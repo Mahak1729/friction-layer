@@ -7,17 +7,27 @@ function categorize(e) {
 }
 
 function outcomeLabel(e) {
-  if (e.kind === "skip") return "skipped (pre-filter)";
-  if (e.dismissed) return "dismissed (Escape)";
+  if (e.kind === "skip") return "Skipped (Pre-Filter)";
+  if (e.dismissed) return "Dismissed (Escape)";
   if (e.outcome === "full") {
-    if (e.accepted) return "full friction, engaged";
-    if (e.forcedThrough) return "full friction, let through after 2 rejections";
-    return "full friction";
+    if (e.accepted) return "Full Friction, Engaged";
+    if (e.forcedThrough) return "Full Friction, Let Through After 2 Rejections";
+    return "Full Friction";
   }
-  if (e.outcome === "nudge") return "light nudge";
-  if (e.failOpen) return "let through (API failure)";
-  if (e.outcome === "none") return "let through";
+  if (e.outcome === "nudge") return "Light Nudge";
+  if (e.failOpen) return "Let Through (API Failure)";
+  if (e.outcome === "none") return "Let Through";
   return e.outcome || "-";
+}
+
+function titleCase(s) {
+  if (!s) return s;
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+const SITE_LABELS = { chatgpt: "ChatGPT", claude: "Claude" };
+function siteLabel(site) {
+  return SITE_LABELS[site] || titleCase(site);
 }
 
 // Monday of the week the timestamp falls in.
@@ -37,20 +47,34 @@ function weekLabel(d) {
   return fmt(d) + " to " + fmt(end);
 }
 
-function buildChart(entries) {
-  const wrap = document.getElementById("chart-wrap");
-  const weeks = new Map();
+function dayStart(ts) {
+  const d = new Date(ts);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function dayLabel(d) {
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+function bucketize(entries, bucketStartFn) {
+  const buckets = new Map();
   for (const e of entries) {
     if (!e.ts) continue;
-    const ws = weekStart(e.ts);
-    const key = ws.toISOString().slice(0, 10);
-    if (!weeks.has(key)) {
-      weeks.set(key, { date: ws, engaged: 0, dismissed: 0, let: 0 });
+    const bs = bucketStartFn(e.ts);
+    const key = bs.toISOString();
+    if (!buckets.has(key)) {
+      buckets.set(key, { date: bs, engaged: 0, dismissed: 0, let: 0 });
     }
-    weeks.get(key)[categorize(e)] += 1;
+    buckets.get(key)[categorize(e)] += 1;
   }
-  const sorted = Array.from(weeks.values()).sort((a, b) => a.date - b.date);
-  if (sorted.length === 0) {
+  return Array.from(buckets.values()).sort((a, b) => a.date - b.date);
+}
+
+function renderBarChart(wrapId, buckets, labelFn) {
+  const wrap = document.getElementById(wrapId);
+  wrap.innerHTML = "";
+  if (buckets.length === 0) {
     wrap.innerHTML = '<div class="empty">Nothing logged yet.</div>';
     return;
   }
@@ -58,7 +82,7 @@ function buildChart(entries) {
   const COLORS = { engaged: "#2A9D6F", dismissed: "#D97D3D", let: "#3B6E8F" };
   const max = Math.max(
     1,
-    ...sorted.map((w) => Math.max(w.engaged, w.dismissed, w.let))
+    ...buckets.map((w) => Math.max(w.engaged, w.dismissed, w.let))
   );
 
   const barW = 22;
@@ -69,7 +93,7 @@ function buildChart(entries) {
   const padL = 34;
   const padB = 40;
   const padT = 12;
-  const width = padL + sorted.length * (groupW + groupGap) + 10;
+  const width = padL + buckets.length * (groupW + groupGap) + 10;
   const height = chartH + padT + padB;
 
   const svgNS = "http://www.w3.org/2000/svg";
@@ -96,7 +120,7 @@ function buildChart(entries) {
   maxLabel.textContent = String(max);
   svg.appendChild(maxLabel);
 
-  sorted.forEach((w, i) => {
+  buckets.forEach((w, i) => {
     const gx = padL + i * (groupW + groupGap) + groupGap / 2;
     ["engaged", "dismissed", "let"].forEach((cat, j) => {
       const value = w[cat];
@@ -127,11 +151,16 @@ function buildChart(entries) {
     label.setAttribute("text-anchor", "middle");
     label.setAttribute("font-size", "12");
     label.setAttribute("fill", "#333333");
-    label.textContent = weekLabel(w.date);
+    label.textContent = labelFn(w.date);
     svg.appendChild(label);
   });
 
   wrap.appendChild(svg);
+}
+
+function buildCharts(entries) {
+  renderBarChart("chart-wrap", bucketize(entries, weekStart), weekLabel);
+  renderBarChart("chart-wrap-daily", bucketize(entries, dayStart), dayLabel);
 }
 
 function el(tag, className, text) {
@@ -146,7 +175,7 @@ function renderEntry(e) {
 
   const head = el("div", "head");
   const when = e.ts ? new Date(e.ts).toLocaleString() : "-";
-  head.appendChild(el("span", "when", when + (e.site ? "  ·  " + e.site : "")));
+  head.appendChild(el("span", "when", when + (e.site ? "  ·  " + siteLabel(e.site) : "")));
   head.appendChild(el("span", "outcome " + categorize(e), outcomeLabel(e)));
   entry.appendChild(head);
 
@@ -163,34 +192,34 @@ function renderEntry(e) {
 
   kv("Reason", e.reason);
   if (e.outcome === "full") {
-    kv("Category", e.category);
+    kv("Category", titleCase(e.category));
     kv("Question", e.question);
     if (Array.isArray(e.attempts)) {
       e.attempts.forEach((a, i) => {
         const verdict =
           a.genuine === true
-            ? "accepted"
+            ? "Accepted"
             : a.genuine === false
-              ? "rejected"
-              : "unchecked (API failure)";
-        kv("Answer attempt " + (i + 1) + " (" + verdict + ")", a.answer);
-        if (a.feedback) kv("  Nudge back", a.feedback);
+              ? "Rejected"
+              : "Unchecked (API Failure)";
+        kv("Answer Attempt " + (i + 1) + " (" + verdict + ")", a.answer);
+        if (a.feedback) kv("  Nudge Back", a.feedback);
       });
     }
     if (e.accepted || e.forcedThrough) {
-      kv("Append toggle", e.appendOn ? "on" : "off");
+      kv("Append Toggle", e.appendOn ? "On" : "Off");
     }
   }
   kv("Nudge", e.nudge);
-  if (e.failOpen) kv("Fail-open", "an API call failed or timed out");
+  if (e.failOpen) kv("Fail-Open", "an API call failed or timed out");
 
   if (Array.isArray(e.context) && e.context.length > 0) {
     const details = document.createElement("details");
-    const summary = el("summary", null, "context judged against (" + e.context.length + " messages)");
+    const summary = el("summary", null, "Context judged against (" + e.context.length + " messages)");
     details.appendChild(summary);
     for (const m of e.context) {
       details.appendChild(
-        el("div", "ctx", "[" + m.role + "] " + (m.text || "").slice(0, 400))
+        el("div", "ctx", "[" + titleCase(m.role) + "] " + (m.text || "").slice(0, 400))
       );
     }
     entry.appendChild(details);
@@ -200,7 +229,7 @@ function renderEntry(e) {
 }
 
 chrome.storage.local.get("frictionLog").then(({ frictionLog = [] }) => {
-  buildChart(frictionLog);
+  buildCharts(frictionLog);
   const container = document.getElementById("entries");
   if (frictionLog.length === 0) {
     container.innerHTML = '<div class="empty">Nothing logged yet.</div>';
