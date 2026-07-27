@@ -263,9 +263,12 @@
     }
     .card {
       position: fixed;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       width: min(620px, calc(100vw - 48px));
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
       z-index: 2147483645;
       background: #FFFFFF;
       color: #333333;
@@ -287,13 +290,14 @@
       color: #000000;
       font-weight: 600;
       margin-bottom: 12px;
+      text-align: center;
     }
     .rule {
       border: none;
       border-top: 2px solid #000000;
       margin: 0 0 12px;
     }
-    .rule.below { margin-top: 16px; }
+    .rule.below { margin-top: 16px; margin-bottom: 0; }
     .preview {
       color: #333333;
       font-style: italic;
@@ -309,7 +313,26 @@
       min-height: 26px;
       margin-bottom: 4px;
     }
-    .loading-space { min-height: 56px; }
+    .loading-space {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .loading-dot {
+      width: 7px;
+      height: 7px;
+      background: #000000;
+      opacity: 0.2;
+      animation: fl-pulse 1.1s ease-in-out infinite;
+    }
+    .loading-dot:nth-child(2) { animation-delay: 0.15s; }
+    .loading-dot:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes fl-pulse {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
     .answer {
       display: block;
       width: 100%;
@@ -341,19 +364,12 @@
       flex: 1;
     }
     .toggle input { accent-color: #000000; width: 14px; height: 14px; cursor: pointer; }
-    .timer {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-    .timer svg { transform: rotate(-90deg); }
-    .timer .track { stroke: #000000; stroke-width: 1.5; }
-    .timer .arc { stroke: #000000; stroke-width: 3; transition: stroke-dashoffset 120ms linear; }
     .count {
       font-size: 13.5px;
       font-variant-numeric: tabular-nums;
       color: #000000;
-      min-width: 34px;
+      min-width: 18px;
+      text-align: right;
     }
     .continue {
       position: relative;
@@ -394,18 +410,6 @@
     .hidden { display: none; }
   `;
 
-  function positionCard(card) {
-    const ed = adapter.getEditor();
-    let bottom = 140;
-    if (ed) {
-      const rect = ed.getBoundingClientRect();
-      bottom = Math.max(24, window.innerHeight - rect.top + 16);
-    }
-    // Keep the card on screen even for tall content.
-    bottom = Math.min(bottom, window.innerHeight - 120);
-    card.style.bottom = bottom + "px";
-  }
-
   function showLoadingCard() {
     ensureFont();
     removeOverlay();
@@ -428,7 +432,9 @@
       <div class="label">The Friction Layer</div>
       <hr class="rule">
       <div class="preview hidden"></div>
-      <div class="loading-space"></div>
+      <div class="loading-space">
+        <span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>
+      </div>
       <div class="question hidden"></div>
       <hr class="rule below">
       <div class="qa hidden">
@@ -439,14 +445,7 @@
             <input type="checkbox" class="append" checked>
             <span>Append my answer to the message</span>
           </label>
-          <div class="timer">
-            <svg width="26" height="26" viewBox="0 0 26 26">
-              <circle class="track" cx="13" cy="13" r="10.5" fill="none" stroke-width="2.5"></circle>
-              <circle class="arc" cx="13" cy="13" r="10.5" fill="none" stroke-width="2.5"
-                      stroke-linecap="butt"></circle>
-            </svg>
-            <span class="count"></span>
-          </div>
+          <span class="count"></span>
           <button class="continue" disabled>Continue</button>
         </div>
         <div class="feedback"></div>
@@ -454,7 +453,6 @@
     `;
     overlayShadow.appendChild(card);
     document.documentElement.appendChild(overlayHost);
-    positionCard(card);
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -470,7 +468,6 @@
     timerDone = false;
     rejectedCount = 0;
 
-    const card = overlayShadow.querySelector(".card");
     overlayShadow.querySelector(".loading-space").classList.add("hidden");
 
     const preview = overlayShadow.querySelector(".preview");
@@ -486,12 +483,6 @@
     const answer = overlayShadow.querySelector(".answer");
     const continueBtn = overlayShadow.querySelector(".continue");
     const countEl = overlayShadow.querySelector(".count");
-    const arc = overlayShadow.querySelector(".arc");
-
-    const R = 10.5;
-    const CIRC = 2 * Math.PI * R;
-    arc.setAttribute("stroke-dasharray", String(CIRC));
-    arc.setAttribute("stroke-dashoffset", "0");
 
     const total = Math.max(5, Math.min(60, settings.timerSeconds || 30)) * 1000;
     const startedAt = Date.now();
@@ -504,13 +495,10 @@
       const elapsed = Date.now() - startedAt;
       const remaining = Math.max(0, total - elapsed);
       const secs = Math.ceil(remaining / 1000);
-      countEl.textContent =
-        Math.floor(secs / 60) + ":" + String(secs % 60).padStart(2, "0");
-      arc.setAttribute("stroke-dashoffset", String(CIRC * (elapsed / total)));
+      countEl.textContent = String(secs);
       if (remaining <= 0) {
         timerDone = true;
-        arc.setAttribute("stroke-dashoffset", String(CIRC));
-        countEl.textContent = "0:00";
+        countEl.textContent = "0";
         updateContinue();
         timerRaf = null;
         return;
@@ -529,7 +517,6 @@
     });
     continueBtn.addEventListener("click", onContinue);
     setTimeout(() => answer.focus(), 300);
-    positionCard(card);
   }
 
   async function onContinue() {

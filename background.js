@@ -62,6 +62,7 @@ Combine into one outcome:
   - bias: what assumption is baked into how the request itself was framed
   - limitation: what the answer will not be able to tell the user, even if it is correct
   - alternative: what a different framing of the same request would surface instead
+  Write the question in a Socratic style: a genuine, open question that leads the user to examine their own assumptions or reasoning, the way a thoughtful mentor asks rather than a form asking you to confirm a box. It must require actual thought to answer honestly, not something dismissible with a single word or an obvious yes or no. Do not phrase it as an accusation, a test, or a lecture in question form.
 - "nudge": the task sits in the ambiguous middle, OR you are genuinely uncertain how to classify it. Generate one short sentence (italic-toned, gentle, non-blocking) that plants a small moment of doubt without stopping anything. No question mark required, no lecture.
 - "none": the task is mechanical and AI is legitimately good at it alone, OR the user already showed real effort earlier in this thread on this same task (including a recently answered friction question on a similar ask).
 
