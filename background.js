@@ -92,18 +92,18 @@ function getConfig() {
   return typeof FRICTION_CONFIG !== "undefined" ? FRICTION_CONFIG : {};
 }
 
-async function callClaude(system, userText, schema) {
+async function callClaude(system, userText, schema, model, effort) {
   const cfg = getConfig();
   if (!cfg.apiKey) throw new Error("missing-api-key");
 
   const body = {
-    model: cfg.model || "claude-opus-5",
+    model,
     max_tokens: 4000,
     system,
     messages: [{ role: "user", content: userText }],
     output_config: { format: { type: "json_schema", schema } },
   };
-  if (cfg.effort) body.output_config.effort = cfg.effort;
+  if (effort) body.output_config.effort = effort;
 
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), API_TIMEOUT_MS);
@@ -158,10 +158,13 @@ function buildClassifyInput(payload) {
 }
 
 async function classify(payload) {
+  const cfg = getConfig();
   const result = await callClaude(
     CLASSIFY_SYSTEM,
     buildClassifyInput(payload),
-    CLASSIFY_SCHEMA
+    CLASSIFY_SCHEMA,
+    cfg.classifyModel || "claude-sonnet-5",
+    cfg.classifyEffort
   );
   if (!["full", "nudge", "none"].includes(result.outcome)) {
     throw new Error("bad-outcome");
@@ -176,12 +179,19 @@ async function classify(payload) {
 }
 
 async function effortCheck(payload) {
+  const cfg = getConfig();
   const input = [
     `Original message the user was about to send: "${(payload.message || "").slice(0, 1500)}"`,
     `Friction question they were asked: "${payload.question || ""}"`,
     `Their answer: "${payload.answer || ""}"`,
   ].join("\n");
-  const result = await callClaude(EFFORT_SYSTEM, input, EFFORT_SCHEMA);
+  const result = await callClaude(
+    EFFORT_SYSTEM,
+    input,
+    EFFORT_SCHEMA,
+    cfg.judgeModel || "claude-haiku-4-5",
+    cfg.judgeEffort
+  );
   if (typeof result.genuine !== "boolean") throw new Error("bad-effort-result");
   return result;
 }

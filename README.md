@@ -34,8 +34,10 @@ Then open **`config.js`** and paste your key between the quotes:
 ```js
 const FRICTION_CONFIG = {
   apiKey: "sk-ant-...",   // paste here
-  model: "claude-opus-5",
-  effort: "low",
+  classifyModel: "claude-sonnet-5",
+  classifyEffort: "low",
+  judgeModel: "claude-haiku-4-5",
+  judgeEffort: null,
 };
 ```
 
@@ -45,10 +47,15 @@ extension's background worker and sent only to `api.anthropic.com`.
 push this folder to GitHub; `config.example.js` (the placeholder template) is
 the only version that's tracked.
 
-The classifier defaults to `claude-opus-5` with low reasoning effort so the
-interruption stays fast. If you want an even faster/cheaper classifier, set
-`model: "claude-haiku-4-5"` and `effort: null` (Haiku does not accept the
-effort parameter).
+Two separate calls, two separate models, no Opus in either:
+
+- **Classifier** (judges task type, delegation, and prior effort from thread
+  context, then writes the reflective question) runs on **Sonnet** — the
+  harder of the two calls.
+- **Genuine-effort check** (a narrower yes/no read on one typed sentence)
+  runs on **Haiku** — cheaper and faster, and sufficient for that judgment.
+  Haiku 4.5 does not accept the `effort` parameter at all, so `judgeEffort`
+  must stay `null`.
 
 ## Which site to test first
 

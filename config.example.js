@@ -8,11 +8,16 @@
 const FRICTION_CONFIG = {
   apiKey: "",
 
-  // Model used for both the classifier and the genuine-effort check.
-  model: "claude-opus-5",
+  // The classifier judges task type, delegation, and prior effort from
+  // thread context, then writes the reflective question. This is the
+  // harder of the two calls, so it runs on Sonnet.
+  classifyModel: "claude-sonnet-5",
+  classifyEffort: "low",
 
-  // Reasoning effort. "low" keeps the interruption fast with claude-opus-5.
-  // If you switch to a model that does not support the effort parameter
-  // (e.g. "claude-haiku-4-5"), set this to null.
-  effort: "low",
+  // The genuine-effort check only judges whether a one-sentence answer
+  // reads as real thought versus filler. Simpler, so it runs on Haiku.
+  // Haiku 4.5 does not support the effort parameter at all, so this must
+  // stay null (sending any value here would make the API call fail).
+  judgeModel: "claude-haiku-4-5",
+  judgeEffort: null,
 };
