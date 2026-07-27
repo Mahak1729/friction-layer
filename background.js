@@ -3,7 +3,13 @@
 // directly, and the key stays out of page contexts). Log writes are also
 // funneled here so concurrent tabs don't clobber each other.
 
-importScripts("config.js");
+try {
+  importScripts("config.js");
+} catch (_e) {
+  // config.js is git-ignored and may not exist yet on a fresh clone.
+  // Fall back to an empty config so the service worker still registers;
+  // callClaude() below surfaces this as a normal missing-api-key failure.
+}
 
 const API_URL = "https://api.anthropic.com/v1/messages";
 const API_TIMEOUT_MS = 20000;
@@ -132,8 +138,7 @@ function buildClassifyInput(payload) {
     lines.push("(none, this is the start of the thread)");
   } else {
     for (const m of context) {
-      const text = (m.text || "").slice(0, 1500);
-      lines.push(`[${m.role}]: ${text}`);
+      lines.push(`[${m.role}]: ${m.text || ""}`);
     }
   }
   if (payload.recentFriction) {

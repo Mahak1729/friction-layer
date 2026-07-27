@@ -522,9 +522,10 @@
     answer.addEventListener("input", updateContinue);
     answer.addEventListener("keydown", (e) => {
       // Keep card keystrokes away from the page; allow Enter to mean Continue.
+      // (Escape is handled by the window-level capture listener below, which
+      // always sees it first and stops propagation before it reaches here.)
       e.stopPropagation();
       if (e.key === "Enter" && !continueBtn.disabled) onContinue();
-      if (e.key === "Escape") dismissWithEscape();
     });
     continueBtn.addEventListener("click", onContinue);
     setTimeout(() => answer.focus(), 300);
@@ -787,8 +788,12 @@
       }
     }
 
-    rejectedCount = 0;
-    const context = adapter.getMessages().slice(-10);
+    // Cap each message's text here, once, since this same array is both
+    // sent to the classifier and stored in the log entry unchanged.
+    const context = adapter
+      .getMessages()
+      .slice(-10)
+      .map((m) => ({ role: m.role, text: (m.text || "").slice(0, 1500) }));
     currentRecord = {
       kind: "classified",
       message: text,
