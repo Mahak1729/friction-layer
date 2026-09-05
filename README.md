@@ -7,6 +7,9 @@ Everywhere else it stays completely silent.
 
 Supported sites: **chatgpt.com** and **claude.ai**, nothing else, by design.
 
+There is no hosted version. A browser extension runs only where it is loaded,
+so the way to see it is to load this folder into Chrome as described below.
+
 ---
 
 ## How to load it
@@ -50,10 +53,10 @@ the only version that's tracked.
 Two separate calls, two separate models, no Opus in either:
 
 - **Classifier** (judges task type, delegation, and prior effort from thread
-  context, then writes the reflective question) runs on **Sonnet** — the
+  context, then writes the reflective question) runs on **Sonnet**, the
   harder of the two calls.
 - **Genuine-effort check** (a narrower yes/no read on one typed sentence)
-  runs on **Haiku** — cheaper and faster, and sufficient for that judgment.
+  runs on **Haiku**, cheaper and faster, and sufficient for that judgment.
   Haiku 4.5 does not accept the `effort` parameter at all, so `judgeEffort`
   must stay `null`.
 
