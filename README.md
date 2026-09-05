@@ -154,6 +154,15 @@ See [LIMITATIONS.md](LIMITATIONS.md), short and worth reading once.
 
 Ideas parked for later, not built yet:
 
+- **Run the eval and publish the score.** `eval/run.js` exists and has not
+  yet completed a full run, because the key in `config.js` was rejected at
+  the time it was written. Run it with a working key and record the N/28
+  here, with the date and model, so the classifier's accuracy is a measured
+  number rather than a claim.
+- **A short GIF of the friction card.** Load the extension, type the cover
+  letter test case on chatgpt.com, and record the card appearing, the timer,
+  and the release. Put it under the intro so a reader sees the interruption
+  before reading how it works.
 - **Provider-agnostic classifier.** Right now the extension only talks to
   `api.anthropic.com`, both `manifest.json`'s `host_permissions` and the
   request/response handling in `background.js` are Anthropic-specific.
