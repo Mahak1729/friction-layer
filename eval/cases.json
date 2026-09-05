@@ -1,0 +1,45 @@
+[
+  { "id": "cover-letter", "expect": ["full"], "message": "Write my cover letter for the Analysis Group analyst role. Here is my resume: econ major, two internships in data analysis, one in consulting." },
+  { "id": "personal-statement", "expect": ["full"], "message": "Write my personal statement for the economics predoc application. I want it to sound thoughtful." },
+  { "id": "pick-the-job", "expect": ["full"], "message": "I have offers from a consulting firm and a research assistant job at a university. Just tell me which one to take." },
+  { "id": "research-writeup", "expect": ["full"], "message": "Write the analysis section of my research memo on how Brattle and NERA differ in their approach to damages estimation. I will present it as my own work." },
+  { "id": "argue-position", "expect": ["full"], "message": "Argue for me why rent control is bad policy. I need it for a class debate tomorrow." },
+  { "id": "reflection-essay", "expect": ["full"], "message": "Write my reflection essay about what I learned during my summer internship." },
+  { "id": "pick-thesis", "expect": ["full"], "message": "Here are three thesis topics I am considering. Pick the best one for me and tell me why." },
+  { "id": "why-this-firm", "expect": ["full"], "message": "Write my answer to the 'why this firm' question on the Analysis Group application." },
+
+  { "id": "recruiter-followup", "expect": ["nudge"], "message": "Write a quick follow up email to this recruiter, I spoke with them last week." },
+  { "id": "alum-coffee", "expect": ["nudge"], "message": "Write a short LinkedIn note to an alum asking for a 15 minute coffee chat." },
+  { "id": "thank-you", "expect": ["nudge"], "message": "Write a thank you email after my interview this morning." },
+  { "id": "extension-ask", "expect": ["nudge"], "message": "Write a two line message to my professor asking for a two day extension on the problem set." },
+  { "id": "club-bio", "expect": ["nudge"], "message": "Write a two sentence bio for me for the econ club website." },
+  { "id": "late-slack", "expect": ["nudge", "none"], "message": "Reply to this Slack message saying I will be ten minutes late." },
+
+  { "id": "thanks", "expect": ["none"], "message": "thanks" },
+  { "id": "grammar", "expect": ["none"], "message": "Fix the grammar in this paragraph: Me and him goes to the store yesterday and buyed three apple." },
+  { "id": "translate", "expect": ["none"], "message": "Translate this to Spanish: The meeting is at three tomorrow." },
+  { "id": "bullets", "expect": ["none"], "message": "Format this into bullet points: we need milk, eggs, bread, and coffee." },
+  { "id": "shorten", "expect": ["none"], "message": "Shorten this to under 100 words without changing the meaning: [paragraph]" },
+  { "id": "define", "expect": ["none"], "message": "What does heteroskedasticity mean?" },
+  { "id": "csv-json", "expect": ["none"], "message": "Convert this CSV to JSON: name,age\\nAda,36" },
+  { "id": "regex", "expect": ["none"], "message": "Give me a regex that matches an email address." },
+  { "id": "python-error", "expect": ["none"], "message": "Explain what this Python error means: TypeError: 'NoneType' object is not subscriptable" },
+  { "id": "capital", "expect": ["none"], "message": "What is the capital of Kentucky?" },
+
+  { "id": "prior-effort", "expect": ["none"],
+    "context": [
+      { "role": "user", "text": "I think my strongest point for the cover letter is the pipeline I built at my internship, because it shows I can own a project end to end rather than just run analyses someone else designed." },
+      { "role": "assistant", "text": "That is a strong angle. Do you want to lead with the outcome or the process?" },
+      { "role": "user", "text": "Outcome first, then one sentence on process. I do not want to sound like I am listing tools." }
+    ],
+    "message": "Okay, write that paragraph now." },
+  { "id": "check-my-draft", "expect": ["none", "nudge"], "message": "Does my cover letter draft seem to be missing anything? Here it is: [draft]" },
+  { "id": "what-to-weigh", "expect": ["none", "nudge"], "message": "What should I weigh when comparing a consulting offer against a research assistant job? I want to think it through myself." },
+  { "id": "answered-friction", "expect": ["none"],
+    "recentFriction": {
+      "message": "Write my cover letter for the Analysis Group analyst role.",
+      "question": "What would the reader learn about you from this letter that your resume does not already say?",
+      "answer": "That I chose the harder project on purpose because I wanted to learn to scope work, not just execute it."
+    },
+    "message": "Write my cover letter for the Analysis Group analyst role, leading with the scoping point." }
+]

@@ -78,6 +78,27 @@ A quick test script (all from the spec's test cases):
 - Press **Escape** on a full friction card → card fades, message sends,
   dismissal is logged.
 
+## Checking the classifier
+
+`eval/cases.json` holds 28 messages with the outcome each one should get:
+eight full handoffs of judgment work (cover letters, a research writeup, a
+decision the user wants made for them), six ambiguous quick messages that
+should draw a nudge, ten mechanical asks that should pass silently, and four
+thread context cases (prior effort shown, a check on the user's own draft, a
+recently answered friction question). Where two outcomes are both defensible
+the case lists both.
+
+```bash
+node eval/run.js --dry-run   # list the cases, no API calls
+node eval/run.js             # run the shipped classifier against every case
+```
+
+The runner loads `background.js` unmodified, so it tests the same prompt and
+parsing the extension uses, and prints one line per case and a final N/28.
+It reads the key from `config.js`, or from `ANTHROPIC_API_KEY` in the
+environment if that is set. Each run costs 28 Sonnet calls at low effort, and
+the last result is written to `eval/last-run.json`, which is not committed.
+
 ## Settings
 
 Click the toolbar icon:
