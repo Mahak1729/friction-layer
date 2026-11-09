@@ -21,13 +21,21 @@
   const adapters = {
     chatgpt: {
       getEditor() {
+        // ChatGPT moved from a textarea with id prompt-textarea to a
+        // ProseMirror editor with no id (seen November 2026). Try the current
+        // composer first and keep the older selectors as fallbacks.
         return (
+          document.querySelector(
+            'div.ProseMirror[contenteditable="true"][aria-label="Ask ChatGPT"]'
+          ) ||
+          document.querySelector('form div.ProseMirror[contenteditable="true"]') ||
           document.querySelector("#prompt-textarea") ||
           document.querySelector("form textarea")
         );
       },
       getSendButton() {
         return (
+          document.querySelector('form button[type="submit"][aria-label="Send"]') ||
           document.querySelector("#composer-submit-button") ||
           document.querySelector('button[data-testid="send-button"]')
         );
