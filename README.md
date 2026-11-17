@@ -69,6 +69,46 @@ keeping the log.
 
 ---
 
+## Settings
+
+Click the toolbar icon.
+
+![The extension popup with an on and off checkbox, a gentle or standard intensity choice, a timer slider set to 30 seconds, and a link to the log](assets/settings-popup.jpg)
+
+- **On or off**
+- **Intensity.** `standard` (the default) fires every time. `gentle` fires only
+  in the first ten minutes on a site, and the session resets after 30 minutes
+  away.
+- **Timer.** 5 to 60 seconds, 30 by default.
+- **View the log.** Opens a private local page with every entry and a weekly
+  chart.
+
+Everything is stored in local browser storage. Nothing leaves your machine
+except the calls to the Anthropic API.
+
+---
+
+## Research behind it
+
+- **The timed pause** comes from Buçinca, Malaya, and Gajos (2021),
+  *To Trust or to Think: Cognitive Forcing Functions Can Reduce Overreliance on
+  AI in AI-assisted Decision-making*, ACM CSCW1
+  ([arXiv 2102.09692](https://arxiv.org/abs/2102.09692)), the paper that
+  introduced cognitive forcing functions. In their "wait" condition the AI
+  appeared to process for exactly 30 seconds before showing its suggestion,
+  and that reduced overreliance. That is why the default timer is 30 seconds.
+- **The question types** (risk, bias, limitation, alternative) come from Cai,
+  Arawjo, Sarkar, and collaborators, *"It makes you think": Provocations Help
+  Restore Critical Thinking to AI-Assisted Knowledge Work*
+  ([arXiv 2501.17247](https://arxiv.org/abs/2501.17247)). Their provocations
+  worked by pointing out risks, biases, limitations, or alternatives.
+- **Why it matters** comes from Liu, Christian, Dumbalska, Bakker, and Dubey
+  (2026) ([arXiv 2604.04721](https://arxiv.org/abs/2604.04721)), a randomized
+  controlled trial showing AI assistance lowers persistence and independent
+  performance within about ten to fifteen minutes.
+
+---
+
 ## Does the classifier get it right
 
 **28 of 28** on the labeled eval set, run November 8, 2026 with
@@ -155,43 +195,7 @@ messages cover every path.
 | `Write a quick follow up email to this recruiter` | Nudge chip appears and the message sends right away. |
 | Press **Escape** on a full card | Card fades, message sends, dismissal is logged. |
 
-## Settings
-
-Click the toolbar icon.
-
-![The extension popup with an on and off checkbox, a gentle or standard intensity choice, a timer slider set to 30 seconds, and a link to the log](assets/settings-popup.jpg)
-
-- **On or off**
-- **Intensity.** `standard` (the default) fires every time. `gentle` fires only
-  in the first ten minutes on a site, and the session resets after 30 minutes
-  away.
-- **Timer.** 5 to 60 seconds, 30 by default.
-- **View the log.** Opens a private local page with every entry and a weekly
-  chart.
-
-Everything is stored in local browser storage. Nothing leaves your machine
-except the calls to the Anthropic API.
-
 ---
-
-## Research behind it
-
-- **The timed pause** comes from Buçinca, Malaya, and Gajos (2021),
-  *To Trust or to Think: Cognitive Forcing Functions Can Reduce Overreliance on
-  AI in AI-assisted Decision-making*, ACM CSCW1
-  ([arXiv 2102.09692](https://arxiv.org/abs/2102.09692)), the paper that
-  introduced cognitive forcing functions. In their "wait" condition the AI
-  appeared to process for exactly 30 seconds before showing its suggestion,
-  and that reduced overreliance. That is why the default timer is 30 seconds.
-- **The question types** (risk, bias, limitation, alternative) come from Cai,
-  Arawjo, Sarkar, and collaborators, *"It makes you think": Provocations Help
-  Restore Critical Thinking to AI-Assisted Knowledge Work*
-  ([arXiv 2501.17247](https://arxiv.org/abs/2501.17247)). Their provocations
-  worked by pointing out risks, biases, limitations, or alternatives.
-- **Why it matters** comes from Liu, Christian, Dumbalska, Bakker, and Dubey
-  (2026) ([arXiv 2604.04721](https://arxiv.org/abs/2604.04721)), a randomized
-  controlled trial showing AI assistance lowers persistence and independent
-  performance within about ten to fifteen minutes.
 
 ## What lives where
 
@@ -207,10 +211,6 @@ except the calls to the Anthropic API.
 | `LIMITATIONS.md` | What the classifier, effort check, and pre-filter get wrong |
 | `assets/` | The recordings and screenshots above |
 
-## Known limits
-
-Worth reading once before relying on it. See [LIMITATIONS.md](LIMITATIONS.md).
-
 ## What is next
 
 - **Support other providers.** The extension only talks to
@@ -221,6 +221,10 @@ Worth reading once before relying on it. See [LIMITATIONS.md](LIMITATIONS.md).
 - **A bigger eval.** 28 cases written by one person is a starting point. More
   cases, written by other people and run several times, would make the score
   mean more.
+
+## Known limits
+
+Worth reading once before relying on it. See [LIMITATIONS.md](LIMITATIONS.md).
 
 ---
 
