@@ -47,8 +47,23 @@ the message sends right away.
 Mechanical asks (fix the grammar, translate this, convert a CSV) pass with only
 a brief loading card. Messages under three words skip the check entirely.
 
-*The messages and answers shown in these recordings are fictional examples
-written for the demo. They do not describe real people, employers, or events.*
+*The messages and answers shown in the three recordings above are fictional
+examples written for the demo. They do not describe real people, employers, or
+events.*
+
+### The log
+
+Every decision is written to local storage, including the ones where nothing
+visible happened. Each entry records the time, the site, the message, which
+layer it landed in, the classifier's reason and category, the question that was
+asked, the answer that was typed, and whether the card was engaged with or
+dismissed with Escape.
+
+![The log page listing four entries, one nudge, one full card that was answered, and two dismissed with Escape, each showing the classifier's reason, category, and question](assets/log-page.jpg)
+
+Dismissals are recorded the same way as engagements, so the log shows how often
+the friction is actually sat through rather than skipped. That number is the
+point of keeping it.
 
 ---
 
@@ -142,6 +157,8 @@ messages cover every path.
 
 Click the toolbar icon.
 
+![The extension popup with an on and off checkbox, a gentle or standard intensity choice, a timer slider set to 30 seconds, and a link to the log](assets/settings-popup.jpg)
+
 - **On or off**
 - **Intensity.** `standard` (the default) fires every time. `gentle` fires only
   in the first ten minutes on a site, and the session resets after 30 minutes
@@ -186,7 +203,7 @@ except the calls to the Anthropic API.
 | `log.html` and `log.js` | Private log with every entry plus weekly and daily charts |
 | `eval/` | The 28 labeled cases and the runner |
 | `LIMITATIONS.md` | What the classifier, effort check, and pre-filter get wrong |
-| `assets/` | The demo recordings above |
+| `assets/` | The recordings and screenshots above |
 
 ## Known limits
 
