@@ -61,9 +61,11 @@ dismissed with Escape.
 
 ![The log page listing four entries, one nudge, one full card that was answered, and two dismissed with Escape, each showing the classifier's reason, category, and question](assets/log-page.jpg)
 
-Dismissals are recorded the same way as engagements, so the log shows how often
-the friction is actually sat through rather than skipped. That number is the
-point of keeping it.
+Unlike the three recordings above, this is a sample of real personal usage, not
+a staged demo. Dismissals are recorded the same way as engagements, so the log
+shows how often the friction is actually sat through rather than skipped. Two
+of the four entries here were dismissed with Escape. That number is the point of
+keeping the log.
 
 ---
 
